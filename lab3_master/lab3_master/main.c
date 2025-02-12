@@ -11,12 +11,20 @@
 #include <stdint.h>
 #include "SPI/SPI.h"
 #include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "com_uart/com_uart.h"
+
 
 uint8_t valorpot1=0;
 uint8_t valorpot2=0;
 uint8_t flag=1;
 uint8_t leer_uart=0;
 volatile char buffRX;
+char cadena[4];
+char *wordRX;
+char *inicio_wordRX;
+uint8_t num_Uart = 255;
 
 void refreshPort(uint8_t valor);
 void writetxtUART(char* texto);
@@ -30,20 +38,23 @@ int main(void)
 	sei();
 	DDRB|=(1<<DDB0)|(1<<DDB1);
 	spiInit(SPI_MASTER_OSC_DIV16,SPI_DATA_ORDER_MSB,SPI_CLOCK_IDLE_LOW,SPI_CLOCK_FIRST_EDGE);
+	wordRX = cadena;
+	inicio_wordRX = wordRX;
     /* Replace with your application code */
     while (1) 
     {
 		PORTB &=~(1<<PORTB2);
-		spiWrite(0);
-		valorpot1=spiRead();
-		PORTB|=(1<<PORTB2);
+		spiWrite('0');
+		valorpot2=spiRead();
 		_delay_ms(250);
+		PORTB|=(1<<PORTB2);
 		
 		PORTB &=~(1<<PORTB2);
 		spiWrite('1');
-		valorpot2=spiRead();
-		PORTB|=(1<<PORTB2);
+		valorpot1=spiRead();
 		_delay_ms(250);
+		PORTB|=(1<<PORTB2);
+		
 		
 		float mpot1=(valorpot1*5.0)/255.0;
 		float mpot2=(valorpot2*5.0)/255.0;
@@ -80,12 +91,23 @@ int main(void)
 		writetxtUART(mensaje);
 		
 		if (leer_uart==1){
+			num_Uart = atoi(wordRX);
+			//writetxtUART(wordRX);
+			wordRX[0] = '\0';
+			PORTB &=~(1<<PORTB2);
 			spiWrite('a');
-			spiWrite(buffRX);
-			PORTD=((PORTD&0x03)|((buffRX<<2)&0xFC));
-			PORTB=((PORTB&0xFC)|((buffRX>>6)&0x03));
+			spiRead();
+			_delay_ms(250);
+			PORTB|=(1<<PORTB2);
+			PORTB &=~(1<<PORTB2);
+			spiWrite(num_Uart);
+			spiRead();
+			_delay_ms(250);
+			PORTB|=(1<<PORTB2);
 			leer_uart=0;
 		}
+		PORTD=((PORTD&0x03)|((num_Uart<<2)&0xFC));
+		PORTB=((PORTB&0xFC)|((num_Uart>>6)&0x03));
 		
     }
 }
@@ -98,8 +120,22 @@ void writetxtUART(char* texto){
 	}
 }
 
+/*void stringToInt(const char *str){
+	while (*str) {
+		char car = *str;
+		
+	}
+}*/
 
 ISR(USART_RX_vect){
-	leer_uart=1;
 	buffRX=UDR0;
+	if ((buffRX == '\n')||(buffRX == '\r')) { //(buffRX==0)||
+		leer_uart = 1;
+		*wordRX = '\0';
+		wordRX++;
+		wordRX = inicio_wordRX;
+	} else {
+		*wordRX = buffRX;
+		wordRX++;
+	}
 }

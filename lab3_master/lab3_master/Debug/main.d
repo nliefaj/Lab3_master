@@ -16,7 +16,11 @@ main.d main.o: .././main.c \
  d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h \
  .././SPI/SPI.h \
  d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h \
- d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h
+ d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h \
+ d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h \
+ d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h \
+ d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h \
+ .././com_uart/com_uart.h
 
 d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\avr\io.h:
 
@@ -53,3 +57,11 @@ d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\math.h:
 d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\string.h:
 
 d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stddef.h:
+
+d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdio.h:
+
+d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\lib\gcc\avr\5.4.0\include\stdarg.h:
+
+d:\microchip_atmel\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\include\stdlib.h:
+
+.././com_uart/com_uart.h:

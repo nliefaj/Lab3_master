@@ -66,6 +66,7 @@ static void spiReceiveWait(){//espera a recibir la data completa
 
 void spiWrite(uint8_t dat){
 	SPDR=dat;//envia la data al bus 
+	while(!(SPSR&(1<<SPIF))); //espera a que se termine de mandar
 }
 
 unsigned spiDataReady(){
@@ -76,6 +77,6 @@ unsigned spiDataReady(){
 }
 
 uint8_t spiRead(void){
-	while(!(SPSR&(1<<SPIF)));//ESPERA A QUE SE COMPLETE DE RECIBIR TODA LA INFO
+	//while(!(SPSR&(1<<SPIF)));//ESPERA A QUE SE COMPLETE DE RECIBIR TODA LA INFO
 	return(SPDR);//LEE LA INFORMACIÓN
 }
